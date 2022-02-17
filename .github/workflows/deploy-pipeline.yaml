@@ -110,7 +110,7 @@ jobs:
         run: self 30
       - name: Destroy test function
         if: ${{ always() }}
-        run: aws lamdba delete-function --function-name test-function
+        run: aws lambda delete-function --function-name test-function
  
   deploy:
     runs-on: ubuntu-latest
