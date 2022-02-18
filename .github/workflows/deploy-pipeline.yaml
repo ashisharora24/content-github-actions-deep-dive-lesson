@@ -89,7 +89,7 @@ jobs:
           aws-secret-access-key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Upload to S3
-        run: aws s3 cp ${{ github.sha }}.zip s3://my-bucket-197hw912hw921hw/${{ github.sha }}.zip
+        run: aws s3 cp ${{ github.sha }}.zip s3://my-bucket-12345ejdn289hdf2nf0h/${{ github.sha }}.zip
   test:
     runs-on: ubuntu-latest
     needs: upload
@@ -102,8 +102,8 @@ jobs:
           aws-region: us-east-1
       - name: Create test function
         run: |
-          aws lambda create-function --function-name test-function-1 \
-          --code S3Bucket=my-bucket-197hw912hw921hw,S3Key=${{ github.sha }}.zip \
+          aws lambda create-function --function-name test-function \
+          --code S3Bucket=my-bucket-12345ejdn289hdf2nf0h,S3Key=${{ github.sha }}.zip \
           --handler lambda_function.lambda_handler --runtime python3.8 \
           --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/my-lambda-role
       - name: Wait 30 seconds
@@ -126,7 +126,7 @@ jobs:
         run: |
           aws lambda update-function-code \
             --function-name my-function \
-            --s3-bucket my-bucket-197hw912hw921hw \
+            --s3-bucket my-bucket-12345ejdn289hdf2nf0h \
             --s3-key ${{ github.sha }}.zip \
             --publish
         
