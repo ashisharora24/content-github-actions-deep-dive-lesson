@@ -105,13 +105,13 @@ jobs:
           aws-region: us-east-1
       - name: Create test function
         run: |
-          aws lambda create-function --function-name test-function-${{ matrix.input }} \
+          aws lambda create-function --function-name test-function1-${{ matrix.input }} \
           --code S3Bucket=my-bucket-398384298342,S3Key=${{ github.sha }}.zip \
           --handler lambda_function.lambda_handler --runtime python3.8 \
           --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/my-lambda-role
       - name: Invoke test function 
         run: |
-            aws lambda invoke --function-name test-function-${{ matrix.input }} \
+            aws lambda invoke --function-name test-function1-${{ matrix.input }} \
               --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base64) \
               --output json out 
             if grep -q "Error" out; then
@@ -119,7 +119,7 @@ jobs:
             fi
       - name: Destroy test function
         if: ${{ always() }}
-        run: aws lambda delete-function --function-name test-function-${{ matrix.input }}
+        run: aws lambda delete-function --function-name test-function1-${{ matrix.input }}
 
   deploy:
     runs-on: ubuntu-latest
